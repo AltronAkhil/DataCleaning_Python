@@ -1,7 +1,7 @@
-from modules.kpi_generator import generate_kpis
-from modules.chart_generator import generate_charts
-from modules.data_cleaner import clean_data
-from modules.dataset_quality import calculate_quality_score
+from app.modules.kpi_generator import generate_kpis
+from app.modules.chart_generator import generate_charts
+from app.modules.data_cleaner import clean_data
+from app.modules.dataset_quality import calculate_quality_score
 
 import os
 
