@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Data Analytics</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="landing-page">
+
+<section class="hero">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <h1>Dynamic Data Analytics Platform</h1>
+
+        <p>
+            Upload any CSV or Excel file and instantly generate
+            KPIs, cleaned datasets, quality scores, and visual analytics.
+        </p>
+
+        <div class="upload-card">
+
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+
+                <input type="file" name="file" required>
+
+                <button type="submit">Analyze Dataset</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="info-section">
+
+    <div class="info-left">
+        <h2>
+            Interactive analytics for
+            any structured dataset.
+        </h2>
+    </div>
+
+    <div class="info-right">
+        <p>
+            Your analytics engine automatically cleans,
+            analyzes, visualizes, and exports cleaned data.
+        </p>
+    </div>
+
+</section>
+
+</body>
+</html>
