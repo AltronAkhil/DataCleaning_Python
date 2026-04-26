@@ -1,14 +1,14 @@
-import subprocess
-import time
+from app.app import app
+import os
 
-try:
+if __name__ == "__main__":
+
+    port = int(os.environ.get("PORT", 5000))
+
     print("Starting App...")
 
-    backend = subprocess.Popen(
-        ["python", "app.py"], 
-        cwd="app"
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=False
     )
-    time.sleep(2)
-except Exception as e:
-    print(f"Error starting App: {e}")
-
