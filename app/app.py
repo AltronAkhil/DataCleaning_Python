@@ -1,16 +1,30 @@
 from flask import Flask, render_template, request, send_from_directory
 import os
 
-from modules.data_loader import load_dataset
-from modules.analytics_engine import analyze_data
+# Correct package imports
+from app.modules.data_loader import load_dataset
+from app.modules.analytics_engine import analyze_data
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'uploads'
+# -----------------------------
+# Folders
+# -----------------------------
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+CLEANED_FOLDER = os.path.join(BASE_DIR, 'cleaned_data')
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['CLEANED_FOLDER'] = CLEANED_FOLDER
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(CLEANED_FOLDER, exist_ok=True)
 
+# -----------------------------
+# Routes
+# -----------------------------
 
 @app.route('/')
 def home():
@@ -35,9 +49,10 @@ def upload_file():
 
     file.save(filepath)
 
-    # Load raw dataset only
+    # Load dataset
     df = load_dataset(filepath)
 
+    # Analyze dataset
     results = analyze_data(
         df,
         original_filename=file.filename
@@ -45,23 +60,36 @@ def upload_file():
 
     return render_template(
         'dashboard.html',
+
         raw_kpis=results['raw_kpis'],
         cleaned_kpis=results['cleaned_kpis'],
         quality=results.get('quality'),
+
         charts=results['charts'],
         cleaned_file=results.get('cleaned_file')
     )
 
+
 @app.route('/download/<path:filename>')
 def download_file(filename):
 
-    cleaned_folder = os.path.join(app.root_path, 'cleaned_data')
-
     return send_from_directory(
-        cleaned_folder,
+        app.config['CLEANED_FOLDER'],
         filename,
         as_attachment=True
     )
 
+
+# -----------------------------
+# Run App
+# -----------------------------
+
 if __name__ == '__main__':
-    app.run(debug=True)
+
+    port = int(os.environ.get('PORT', 5000))
+
+    app.run(
+        host='0.0.0.0',
+        port=port,
+        debug=False
+    )
